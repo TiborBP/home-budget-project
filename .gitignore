@@ -1,0 +1,13 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Alembic cache
+alembic/versions/__pycache__/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
