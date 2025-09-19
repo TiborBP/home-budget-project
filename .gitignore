@@ -1,6 +1,9 @@
 # Virtual environment
 venv/
 
+# Environment variables
+.env
+
 # Python cache
 __pycache__/
 *.pyc
@@ -12,5 +15,3 @@ alembic/versions/__pycache__/
 .DS_Store
 Thumbs.db
 
-# Environment variables
-.env
