@@ -29,20 +29,30 @@ cd home-budget-project
 2. Create and activate a virtual environment:
 ```bash
 python -m venv venv
-source venv/bin/activate #venv\Scripts\activate for windows
+source venv/bin/activate # venv\Scripts\activate for windows
 ```
 3. Install dependencies:
 ```bash
 cd home_budget_api
 pip install -r requirements.txt
 ```
-4. Database setup:
+4. Set up the .env:
+```bash
+cp .env.example .env   # copy .env.example .env for Windows (PowerShell)
+```
+4.1 Generate a secret key:
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
+4.2 Paste generated key into the .env as SECRET_KEY
+
+5. Database setup:
 ```bash
 python setup_db.py admin
 ```
-5. Run the app
+6. Run the app
 ```bash
-cd.. #have to be in home_budget_project\
+cd.. # have to be in home_budget_project
 uvicorn home_budget_api.main:app --reload --log-level debug
 ```
 Swagger UI is available at: http://127.0.0.1:8000/docs
