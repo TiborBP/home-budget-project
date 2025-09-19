@@ -31,17 +31,15 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-# ---------------- AUTH ROUTER ----------------
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-# ---------------- REGISTER ----------------
 @router.post("/register", response_model=schemas.UserResponse)
 def register(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
-    # Check if username exists
+
     if db.query(models.User).filter(models.User.username == user.username).first():
         raise HTTPException(status_code=400, detail="Username already registered")
-    # Create user in db
+    
     db_user = models.User(
         username=user.username,
         password_hash=hash_password(user.password),
@@ -53,7 +51,6 @@ def register(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
     return db_user
 
 
-# ---------------- LOGIN ----------------
 @router.post("/login", response_model=schemas.Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
     user = db.query(models.User).filter(models.User.username == form_data.username).first()
@@ -67,7 +64,6 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-# ---------------- GET CURRENT USER ----------------
 from fastapi.security import OAuth2PasswordBearer
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -91,17 +87,14 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     return user
 
 
-# ---------------- UPDATE USER BALANCE ----------------
 @router.patch("/me/balance", response_model=schemas.UserResponse)
 def update_balance(
     balance_update: schemas.BalanceUpdate,
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(get_current_user)
 ):
-    # Ensure current_user is fresh
     db.refresh(current_user)
 
-    # Work in Decimal for money
     current_balance: Decimal = cast(Decimal, current_user.initial_balance)
     amount_to_add = Decimal(str(balance_update.amount))
 
@@ -110,7 +103,6 @@ def update_balance(
 
     new_balance = current_balance + amount_to_add
 
-    # Tell the type checker to treat current_user as Any for assignment
     user_any = cast(Any, current_user)
     user_any.initial_balance = new_balance
 
@@ -120,7 +112,6 @@ def update_balance(
     return current_user
 
 
-# ---------------- VIEW CURRENT USER BALANCE ----------------
 @router.get("/me", response_model=schemas.UserResponse)
 def get_me(
     db: Session = Depends(database.get_db),
@@ -129,5 +120,5 @@ def get_me(
     """
     Returns the currently logged-in user's profile for easy viewing of balance.
     """
-    db.refresh(current_user)  # make sure we have fresh data from DB
+    db.refresh(current_user)
     return current_user

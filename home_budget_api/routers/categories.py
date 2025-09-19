@@ -6,7 +6,6 @@ from .auth import get_current_user
 router = APIRouter(prefix="/categories", tags=["categories"])
 
 
-# ---------------- VIEW CATEGORIES ----------------
 @router.get("/", response_model=list[schemas.CategoryResponse])
 def list_categories(
     db: Session = Depends(database.get_db),
@@ -18,21 +17,19 @@ def list_categories(
     return categories
 
 
-# ---------------- ADD CATEGORIES ----------------
 @router.post("/", response_model=schemas.CategoryResponse)
 def create_category(
     category: schemas.CategoryCreate,
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(get_current_user)
 ):
-    db_category = models.Category(name=category.name, user_id=current_user.id) # Can create multiple categories of same name, maybe should restrict to unique name for each category?
+    db_category = models.Category(name=category.name, user_id=current_user.id) # Could create multiple categories of same name, maybe should restrict to unique name for each category?
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
     return db_category
 
 
-# ---------------- REMOVE CATEGORIES ----------------
 @router.delete("/{category_id}")
 def delete_category(
     category_id: int,

@@ -17,7 +17,6 @@ router = APIRouter(
 )
 
 
-# ---------------- ADD EXPENSE ----------------
 @router.post("/", response_model=schemas.ExpenseResponse)
 def create_expense(
     expense: schemas.ExpenseCreate,
@@ -55,7 +54,6 @@ def create_expense(
     return db_expense
 
 
-# ---------------- VIEW EXPENSES ----------------
 @router.get("/", response_model=List[schemas.ExpenseResponse])
 def list_expenses(
     db: Session = Depends(database.get_db),
@@ -82,7 +80,6 @@ def list_expenses(
     return query.all()
 
 
-# ---------------- REMOVE EXPENSES ----------------
 @router.delete("/{expense_id}")
 def delete_expense(
     expense_id: int,

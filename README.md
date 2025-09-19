@@ -1,5 +1,5 @@
 # Home Budget API
-Simple backend REST API for managing a personal/home budget, built with FastAPI and PostgreSQL.
+Simple backend REST API for managing a personal/home budget.
 
 ## Features
 - User registration and login (JWT authentication)
@@ -16,42 +16,36 @@ Simple backend REST API for managing a personal/home budget, built with FastAPI 
 - SQLAlchemy
 - Pydantic
 - Swagger/OpenAPI documentation
+- Alembic
 
 ## Setup
 
 1. Clone the repository:
-
+```bash
 git clone <repo-url>
-cd home_budget_api
-
+cd home_budget_project
+```
 2. Create and activate a virtual environment:
+```bash
 python -m venv venv
 source venv/bin/activate #venv\Scripts\activate for windows
-
+```
 3. Install dependencies:
+```bash
+cd home_budget_api
 pip install -r requirements.txt
-
+```
 4. Database setup:
-CREATE DATABASE home_budget;
-CREATE USER home_budget_user WITH PASSWORD 'home_budget';
-GRANT ALL PRIVILEGES ON DATABASE home_budget TO home_budget_user;
-
-5. Run the app:
-uvicorn home_budget_api.main:app --reload
-
+```bash
+python setup_db.py admin
+```
+5. Run the app
+```bash
+cd.. #have to be in home_budget_project\
+uvicorn home_budget_api.main:app --reload --log-level debug
+```
 Swagger UI is available at: http://127.0.0.1:8000/docs
 
 
 
-
-cd home_budget_project
-python -m venv venv
-source venv/bin/activate #venv\Scripts\activate for windows
-
-cd home_budget_api
-pip install -r requirements.txt
-
-in home_budget_api> python setup_db.py admin
-
-cd..
-uvicorn home_budget_api.main:app --reload --log-level debug
+## Functionalities
