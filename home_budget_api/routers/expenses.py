@@ -120,13 +120,6 @@ def get_budget_summary(
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(get_current_user)
 ):
-    """
-    Returns a summary of the user's budget:
-    - Total spent
-    - Remaining balance
-    - Spending per category
-    - Spending last month, last quarter, last year
-    """
     from decimal import Decimal
     from typing import cast
     from sqlalchemy import func

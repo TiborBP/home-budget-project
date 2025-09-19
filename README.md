@@ -2,8 +2,9 @@
 Simple backend REST API for managing a personal/home budget.
 
 ## Features
+- DB setup
 - User registration and login (JWT authentication)
-- Preset and user-created categories
+- Preset (food, car and recreation) and user-created categories
 - Add, view, and delete expenses and categories
 - Filter expenses by category, amount, and date
 - Budget summary with total spent, remaining balance, and spending by category
@@ -45,7 +46,3 @@ cd.. #have to be in home_budget_project\
 uvicorn home_budget_api.main:app --reload --log-level debug
 ```
 Swagger UI is available at: http://127.0.0.1:8000/docs
-
-
-
-## Functionalities

@@ -12,7 +12,7 @@ from typing import Any, cast
 
 
 # ---------------- PASSWORD & JWT SETUP ----------------
-SECRET_KEY = "iVdzQLqUiX"
+SECRET_KEY = "f0cbaacab2da2a42c2e15a6eff9b812f823ead245083412900adf285212a043f" # python -c "import secrets; print(secrets.token_hex(32))"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
@@ -112,13 +112,10 @@ def update_balance(
     return current_user
 
 
-@router.get("/me", response_model=schemas.UserResponse)
+@router.get("/userinfo", response_model=schemas.UserResponse)
 def get_me(
     db: Session = Depends(database.get_db),
     current_user: models.User = Depends(get_current_user)
 ):
-    """
-    Returns the currently logged-in user's profile for easy viewing of balance.
-    """
     db.refresh(current_user)
     return current_user
