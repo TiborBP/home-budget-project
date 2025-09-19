@@ -11,3 +11,6 @@ alembic/versions/__pycache__/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Environment variables
+.env

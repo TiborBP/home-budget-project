@@ -9,10 +9,13 @@ from fastapi.security import OAuth2PasswordRequestForm
 from .. import models, schemas, database
 from decimal import Decimal
 from typing import Any, cast
+import os
+from dotenv import load_dotenv
 
 
 # ---------------- PASSWORD & JWT SETUP ----------------
-SECRET_KEY = "f0cbaacab2da2a42c2e15a6eff9b812f823ead245083412900adf285212a043f" # python -c "import secrets; print(secrets.token_hex(32))"
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
@@ -28,7 +31,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM) # type: ignore
 
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -75,7 +78,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]) # type: ignore
         user_id: Optional[str] = payload.get("sub")
         if user_id is None:
             raise credentials_exception
