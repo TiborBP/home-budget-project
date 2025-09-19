@@ -22,7 +22,7 @@ Simple backend REST API for managing a personal/home budget.
 
 1. Clone the repository:
 ```bash
-git clone <repo-url>
+git clone https://github.com/TiborBP/home-budget-project.git
 cd home_budget_project
 ```
 2. Create and activate a virtual environment:
